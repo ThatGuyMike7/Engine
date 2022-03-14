@@ -1,0 +1,16 @@
+# Editor files
+/.vscode/
+/*.sublime-project
+/*.sublime-workspace
+/*.clang_complete
+/*.vim
+
+# Visual Studio files
+/.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+
+# Project files
+/Build/

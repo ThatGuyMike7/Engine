@@ -32,10 +32,23 @@ namespace Engine::Core
 
         void PollEvents();
 
+        void Swap() const;
+
         [[nodiscard]] bool DesiresQuit() const;
+
+        // Info useful for calling `glViewport`.
+        // \returns Client area width.
+        [[nodiscard]] int Width() const;
+
+        // Info useful for calling `glViewport`.
+        // \returns Client area height.
+        [[nodiscard]] int Height() const;
 
     private:
         Context();
+
+        // Call before creating window.
+        bool SetGLAttributes() const;
 
         [[nodiscard]] bool CreateWindow(char const *title, int width, int height);
         void CloseWindow();

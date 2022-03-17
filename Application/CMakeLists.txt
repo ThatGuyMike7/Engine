@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 set(APPLICATION_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Binary/${CMAKE_SYSTEM_NAME}/${ARCH}/${BUILD_TYPE}")
 set(APPLICATION_OUTPUT_NAME "Application")

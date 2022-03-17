@@ -1,5 +1,4 @@
 #include <Engine/Core/Context.hpp>
-
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -39,14 +38,17 @@ namespace Engine::Core
 
     Context& Context::operator=(Context &&other)
     {
-        GLContext = other.GLContext;
-        window = other.window;
-        initialized = other.initialized;
-        desiresQuit = other.desiresQuit;
-        other.GLContext = nullptr;
-        other.window = nullptr;
-        other.initialized = false;
-        other.desiresQuit = false;
+        if (&other != this)
+        {
+            GLContext = other.GLContext;
+            window = other.window;
+            initialized = other.initialized;
+            desiresQuit = other.desiresQuit;
+            other.GLContext = nullptr;
+            other.window = nullptr;
+            other.initialized = false;
+            other.desiresQuit = false;
+        }
         return *this;
     }
 
@@ -65,6 +67,11 @@ namespace Engine::Core
             return std::nullopt;
         }
         context.initialized = true;
+
+        if (!context.SetGLAttributes())
+        {
+            return std::nullopt;
+        }
 
         if (!context.CreateWindow(windowTitle, windowWidth, windowHeight))
         {
@@ -111,9 +118,79 @@ namespace Engine::Core
         }
     }
 
+    void Context::Swap() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(window);
+        SDL_GL_SwapWindow(SDLWindow);
+    }
+
     bool Context::DesiresQuit() const
     {
         return desiresQuit;
+    }
+
+    int Context::Width() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(window);
+        int width;
+        SDL_GL_GetDrawableSize(SDLWindow, &width, nullptr);
+        return width;
+    }
+
+    int Context::Height() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(window);
+        int height;
+        SDL_GL_GetDrawableSize(SDLWindow, nullptr, &height);
+        return height;
+    }
+
+    bool Context::SetGLAttributes() const
+    {
+        if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE) != 0)
+        {
+            std::cout << "Something went wrong setting attribute \"SDL_GL_CONTEXT_PROFILE_MASK\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+        if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4) != 0)
+        {
+            std::cout << "Something went wrong setting attribute \"SDL_GL_CONTEXT_MAJOR_VERSION\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+        if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6) != 0)
+        {
+            std::cout << "Something went wrong setting attribute \"SDL_GL_CONTEXT_MINOR_VERSION\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        // Verify that we got what we asked for.
+        int profileMask;
+        int majorVersion;
+        int minorVersion;
+        if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &profileMask) != 0)
+        {
+            std::cout << "Something went wrong getting attribute \"SDL_GL_CONTEXT_PROFILE_MASK\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+        if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &majorVersion) != 0)
+        {
+            std::cout << "Something went wrong getting attribute \"SDL_GL_CONTEXT_MAJOR_VERSION\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+        if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minorVersion) != 0)
+        {
+            std::cout << "Something went wrong getting attribute \"SDL_GL_CONTEXT_MINOR_VERSION\": " << SDL_GetError() << std::endl;
+            return false;
+        }
+        if (profileMask != SDL_GL_CONTEXT_PROFILE_CORE ||
+            majorVersion != 4 ||
+            minorVersion != 6)
+        {
+            std::cout << "OpenGL 4.6 Core is not available." << std::endl;
+            return false;
+        }
+
+        return true;
     }
 
     bool Context::CreateWindow(char const *title, int width, int height)

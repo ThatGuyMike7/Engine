@@ -10,8 +10,8 @@
 #
 # `CMAKE_SYSTEM_NAME` can be "Windows", "Linux", "Darwin", ...
 
-cmake_minimum_required (VERSION 3.16)
-project (Engine CXX)
+cmake_minimum_required(VERSION 3.16)
+project(Engine CXX)
 
 function(set_common_options TARGET TARGET_OUTPUT_DIR TARGET_OUTPUT_NAME)
     if (MSVC)

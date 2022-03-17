@@ -5,16 +5,18 @@
 
 int main()
 {
-    std::optional<Engine::Core::Context> context = Engine::Core::Context::Create();
+    std::optional<Engine::Core::Context> context = Engine::Core::Context::Create("Engine", 800, 600);
     if (!context)
     {
-        return 0;
+        return 1;
     }
 
-    if (!context->CreateWindow("Engine", 800, 600))
+    if (!Engine::Graphics::LoadGL(context->GetGLProcAddress()))
     {
-        return 0;
+        return 1;
     }
+
+    std::cout << "OpenGL " << Engine::Graphics::GLMajorVersion() << "." << Engine::Graphics::GLMinorVersion() << std::endl;
 
     while (!context->DesiresQuit())
     {

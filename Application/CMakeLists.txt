@@ -9,14 +9,15 @@ file(GLOB_RECURSE APPLICATION_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.c"
 )
 
+# Without this, CMake won't compile files with ".c" extension.
+set_source_files_properties(${APPLICATION_SOURCES} PROPERTIES LANGUAGE CXX)
+
 # Create target.
 add_executable(${APPLICATION_TARGET} ${APPLICATION_SOURCES})
 
 # Add include directories.
 target_include_directories(${APPLICATION_TARGET}
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Include"
-    PRIVATE "${CMAKE_SOURCE_DIR}/Core/Include"
-    PRIVATE "${CMAKE_SOURCE_DIR}/Graphics/Include"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source"
 )
 
 set_common_options(${APPLICATION_TARGET} ${APPLICATION_OUTPUT_DIR} ${APPLICATION_OUTPUT_NAME})

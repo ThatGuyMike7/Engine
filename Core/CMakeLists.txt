@@ -9,12 +9,16 @@ file(GLOB_RECURSE CORE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.c"
 )
 
+# Without this, CMake won't compile files with ".c" extension.
+set_source_files_properties(${CORE_SOURCES} PROPERTIES LANGUAGE CXX)
+
 # Create target.
 add_library(${CORE_TARGET} STATIC ${CORE_SOURCES})
 
 # Add include directories.
 target_include_directories(${CORE_TARGET}
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Include"
+    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Include"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source"
     PRIVATE "${SDL2_DIR}/Include"
 )
 

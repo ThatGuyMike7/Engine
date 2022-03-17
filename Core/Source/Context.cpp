@@ -6,27 +6,32 @@
 namespace Engine::Core
 {
     Context::Context()
-        : window(nullptr), initialized(false), desiresQuit(false)
+        : GLContext(nullptr), window(nullptr), initialized(false), desiresQuit(false)
     {
     }
 
     Context::~Context()
     {
+        if (GLContext != nullptr)
+        {
+            SDL_GL_DeleteContext(GLContext);
+        }
         if (window != nullptr)
         {
             CloseWindow();
         }
-
         if (initialized)
         {
             SDL_Quit();
-            contextCreated = false;
         }
+
+        contextCreated = false;
     }
 
     Context::Context(Context &&other)
-        : window(other.window), initialized(other.initialized), desiresQuit(other.desiresQuit)
+        : GLContext(other.GLContext), window(other.window), initialized(other.initialized), desiresQuit(other.desiresQuit)
     {
+        other.GLContext = nullptr;
         other.window = nullptr;
         other.initialized = false;
         other.desiresQuit = false;
@@ -34,54 +39,53 @@ namespace Engine::Core
 
     Context& Context::operator=(Context &&other)
     {
+        GLContext = other.GLContext;
         window = other.window;
         initialized = other.initialized;
         desiresQuit = other.desiresQuit;
+        other.GLContext = nullptr;
         other.window = nullptr;
         other.initialized = false;
         other.desiresQuit = false;
         return *this;
     }
 
-    std::optional<Context> Context::Create()
+    std::optional<Context> Context::Create(char const *windowTitle, int windowWidth, int windowHeight)
     {
         if (contextCreated)
         {
             std::cout << "Error: There must only be 1 Core Context." << std::endl;
             return std::nullopt;
         }
+        Context context;
 
         if (SDL_Init(SDL_INIT_VIDEO) != 0)
         {
             std::cout << "Something went wrong initializing SDL: " << SDL_GetError() << std::endl;
-            SDL_Quit();
+            return std::nullopt;
+        }
+        context.initialized = true;
+
+        if (!context.CreateWindow(windowTitle, windowWidth, windowHeight))
+        {
             return std::nullopt;
         }
 
-        Context core;
-        core.initialized = true;
-        core.contextCreated = true;
-        return std::optional<Context>(std::move(core));
-    }
-
-    bool Context::CreateWindow(const char *title, int width, int height)
-    {
-        Uint32 flags = SDL_WINDOW_OPENGL;
-        SDL_Window *SDLWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
-        if (SDLWindow == nullptr)
+        auto SDLWindow = static_cast<SDL_Window*>(context.window);
+        context.GLContext = SDL_GL_CreateContext(SDLWindow);
+        if (context.GLContext == nullptr)
         {
-            std::cout << "Something went wrong creating window: " << SDL_GetError() << std::endl;
-            return false;
+            std::cout << "Something went wrong creating GL context: " << SDL_GetError() << std::endl;
+            return std::nullopt;
         }
-        this->window = SDLWindow;
-        return true;
+
+        Context::contextCreated = true;
+        return std::optional<Context>(std::move(context));
     }
 
-    void Context::CloseWindow()
+    GLProcAddress_t* Context::GetGLProcAddress() const
     {
-        auto* SDLWindow = static_cast<SDL_Window*>(window);
-        SDL_DestroyWindow(SDLWindow);
-        this->window = nullptr;
+        return SDL_GL_GetProcAddress;
     }
 
     void Context::PollEvents()
@@ -110,5 +114,25 @@ namespace Engine::Core
     bool Context::DesiresQuit() const
     {
         return desiresQuit;
+    }
+
+    bool Context::CreateWindow(char const *title, int width, int height)
+    {
+        Uint32 flags = SDL_WINDOW_OPENGL;
+        SDL_Window *SDLWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+        if (SDLWindow == nullptr)
+        {
+            std::cout << "Something went wrong creating window: " << SDL_GetError() << std::endl;
+            return false;
+        }
+        this->window = SDLWindow;
+        return true;
+    }
+
+    void Context::CloseWindow()
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(window);
+        SDL_DestroyWindow(SDLWindow);
+        this->window = nullptr;
     }
 }

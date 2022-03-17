@@ -5,6 +5,12 @@
 
 namespace Engine::Core
 {
+    // Alias for `SDL_GLContext`.
+    using GLContext = void*;
+
+    // Alias for `SDL_GL_GetProcAddress` and `GLADloadproc`.
+    using GLProcAddress_t = void* (char const*);
+
     // `SDL_Window*` for the current SDL2 window abstraction.
     // Could be for example `HWND` when writing a WinAPI window abstraction.
     using WindowHandle = void*;
@@ -14,17 +20,15 @@ namespace Engine::Core
     {
     public:
         ~Context();
-        Context(const Context&) = delete;
-        Context& operator=(const Context&) = delete;
+        Context(Context const&) = delete;
+        Context& operator=(Context const&) = delete;
         Context(Context &&other);
         Context& operator=(Context &&other);
 
-        [[nodiscard]] static std::optional<Context> Create();
+        // Open a window and create a GL context.
+        [[nodiscard]] static std::optional<Context> Create(char const *windowTitle, int windowWidth, int windowHeight);
 
-        // Create and open a new window.
-        // If a window is already created, close it and create a new window.
-        [[nodiscard]] bool CreateWindow(const char *title, int width, int height);
-        void CloseWindow();
+        GLProcAddress_t* GetGLProcAddress() const;
 
         void PollEvents();
 
@@ -33,7 +37,11 @@ namespace Engine::Core
     private:
         Context();
 
+        [[nodiscard]] bool CreateWindow(char const *title, int width, int height);
+        void CloseWindow();
+
         inline static bool contextCreated = false;
+        GLContext GLContext;
         WindowHandle window;
         bool initialized;
         bool desiresQuit;

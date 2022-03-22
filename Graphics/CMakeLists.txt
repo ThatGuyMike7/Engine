@@ -22,8 +22,3 @@ target_include_directories(${GRAPHICS_TARGET}
 )
 
 set_common_options(${GRAPHICS_TARGET} ${GRAPHICS_OUTPUT_DIR} ${GRAPHICS_OUTPUT_NAME})
-
-# Define `ENGINE_GRAPHICS_DEBUG` in Debug mode.
-if (${BUILD_TYPE} STREQUAL "Debug")
-    target_compile_definitions(${GRAPHICS_TARGET} PRIVATE "ENGINE_GRAPHICS_DEBUG")
-endif ()

@@ -24,7 +24,7 @@ namespace Engine::Core
             SDL_Quit();
         }
 
-        contextCreated = false;
+        created = false;
     }
 
     Context::Context(Context &&other)
@@ -54,7 +54,7 @@ namespace Engine::Core
 
     std::optional<Context> Context::Create(char const *windowTitle, int windowWidth, int windowHeight)
     {
-        if (contextCreated)
+        if (created)
         {
             std::cout << "Error: There must only be 1 Core Context." << std::endl;
             return std::nullopt;
@@ -86,7 +86,7 @@ namespace Engine::Core
             return std::nullopt;
         }
 
-        Context::contextCreated = true;
+        Context::created = true;
         return std::optional<Context>(std::move(context));
     }
 

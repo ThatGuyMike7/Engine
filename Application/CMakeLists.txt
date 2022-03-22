@@ -21,8 +21,3 @@ target_include_directories(${APPLICATION_TARGET}
 )
 
 set_common_options(${APPLICATION_TARGET} ${APPLICATION_OUTPUT_DIR} ${APPLICATION_OUTPUT_NAME})
-
-# Define `ENGINE_APPLICATION_DEBUG` in Debug mode.
-if (${BUILD_TYPE} STREQUAL "Debug")
-    target_compile_definitions(${APPLICATION_TARGET} PRIVATE "ENGINE_APPLICATION_DEBUG")
-endif ()

@@ -20,7 +20,7 @@ CMakeBuildDir = os.path.join(".", "Build", SystemName, args.Arch, args.BuildType
 # We specify both `CMAKE_BUILD_TYPE` for single-configuration generators (Make, Ninja, ...)
 # and `--config` for multi-configuration generators (Visual Studio, ...).
 # Not sure if it's required to specify both but we just do it.
-CMakeGenerateCommand = "cmake -S\"" + CMakeSourceDir + "\" -B\"" + CMakeBuildDir + "\" -DARCH=" + args.Arch + " -DBUILD_TYPE=" + args.BuildType + " -DCMAKE_BUILD_TYPE=" + args.BuildType
+CMakeGenerateCommand = "cmake -S\"" + CMakeSourceDir + "\" -B\"" + CMakeBuildDir + "\" -DARCH=" + args.Arch + " -DSYSTEM_NAME=" + SystemName.upper() + " -DBUILD_TYPE=" + args.BuildType + " -DCMAKE_BUILD_TYPE=" + args.BuildType
 CMakeBuildCommand = "cmake --build \"" + CMakeBuildDir + "\" --config " + args.BuildType
 
 print("Host Operating System: \"" + SystemName + "\"")

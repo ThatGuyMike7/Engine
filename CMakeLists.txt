@@ -20,6 +20,8 @@ function(set_common_options TARGET TARGET_OUTPUT_DIR TARGET_OUTPUT_NAME)
             /W4                 # Warning level.
             /wd4458             # Suppress warning "declaration of 'x' hides class member".
             /wd4996             # Suppress warning "'fopen': This function or variable may be unsafe. Consider using fopen_s instead."
+            /wd4146             # Suppress warning "unary minus operator applied to unsigned type, result still unsigned".
+            /wd4100             # Suppress warning "unreferenced formal parameter".
             #/fsanitize=address
         )
     else ()
@@ -47,11 +49,25 @@ function(set_common_options TARGET TARGET_OUTPUT_DIR TARGET_OUTPUT_NAME)
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
     )
+
+    # Define "ENGINE_DEBUG" in Debug mode.
+    if (${BUILD_TYPE} STREQUAL "Debug")
+        target_compile_definitions(${TARGET} PRIVATE "ENGINE_DEBUG")
+    endif ()
+
+    # Define system name, for example "ENGINE_WINDOWS"
+    # Check python build script for more information as it sets `SYSTEM_NAME`.
+    target_compile_definitions(${TARGET} PRIVATE "ENGINE_${SYSTEM_NAME}")
 endfunction()
 
 set(ARCH "Undefined" CACHE STRING "Name of target architecture, must match architecture of host machine. For example \"x64\" or \"ARM64\".")
 if ((NOT DEFINED ARCH) OR (${ARCH} STREQUAL "Undefined"))
     message(FATAL_ERROR "`ARCH` is undefined.")
+endif ()
+
+set(SYSTEM_NAME "Undefined" CACHE STRING "Name of target system name.")
+if ((NOT DEFINED SYSTEM_NAME) OR (${SYSTEM_NAME} STREQUAL "Undefined"))
+    message(FATAL_ERROR "`SYSTEM_NAME` is undefined.")
 endif ()
 
 set(BUILD_TYPE "Undefined" CACHE STRING "Build type. Must be one of [\"Debug\", \"Release\", \"RelWithDebInfo\", \"MinSizeRel\"]")

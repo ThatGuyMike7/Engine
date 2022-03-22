@@ -27,7 +27,7 @@ namespace Engine::Graphics
 
     Context::~Context()
     {
-        contextCreated = false;
+        created = false;
     }
 
     Context::Context(Context &&other)
@@ -48,7 +48,7 @@ namespace Engine::Graphics
 
     std::optional<Context> Context::Create(Engine::Core::Context const &core)
     {
-        if (contextCreated)
+        if (created)
         {
             std::cout << "Error: There must only be 1 Graphics Context." << std::endl;
             return std::nullopt;
@@ -65,7 +65,7 @@ namespace Engine::Graphics
 
         context.Resize();
 
-        Context::contextCreated = true;
+        Context::created = true;
         return std::optional<Context>(std::move(context));
     }
 

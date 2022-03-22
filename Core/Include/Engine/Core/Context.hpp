@@ -45,6 +45,7 @@ namespace Engine::Core
         [[nodiscard]] int Height() const;
 
     private:
+        inline static bool created = false;
         Context();
 
         // Call before creating window.
@@ -53,7 +54,6 @@ namespace Engine::Core
         [[nodiscard]] bool CreateWindow(char const *title, int width, int height);
         void CloseWindow();
 
-        inline static bool contextCreated = false;
         GLContext GLContext;
         WindowHandle window;
         bool initialized;

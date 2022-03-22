@@ -29,9 +29,9 @@ namespace Engine::Graphics
         void Resize() const;
 
     private:
+        inline static bool created = false;
         Context(Engine::Core::Context const &core);
 
-        inline static bool contextCreated = false;
         Engine::Core::Context const *core;
     };
 }

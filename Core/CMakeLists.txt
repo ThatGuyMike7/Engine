@@ -23,8 +23,3 @@ target_include_directories(${CORE_TARGET}
 )
 
 set_common_options(${CORE_TARGET} ${CORE_OUTPUT_DIR} ${CORE_OUTPUT_NAME})
-
-# Define `ENGINE_CORE_DEBUG` in Debug mode.
-if (${BUILD_TYPE} STREQUAL "Debug")
-    target_compile_definitions(${CORE_TARGET} PRIVATE "ENGINE_CORE_DEBUG")
-endif ()

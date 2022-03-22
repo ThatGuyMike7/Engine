@@ -1,9 +1,23 @@
 #include <Engine/Core/Context.hpp>
 #include <Engine/Graphics/Context.hpp>
+#include <Engine/Core/Memory/MemoryCoordinator.hpp>
 #include <iostream>
 
 int main()
 {
+    int *ptr = static_cast<int*>(Engine::Core::Memory::MC.Allocate(sizeof(int)));
+    *ptr = 5;
+    std::cout << "*ptr: " << *ptr << std::endl;
+    Engine::Core::Memory::MC.Free(ptr);
+
+    #ifdef ENGINE_WINDOWS
+    std::cout << "Windows" << std::endl;
+    #endif
+
+    #ifdef ENGINE_DEBUG
+    std::cout << "Debug" << std::endl;
+    #endif
+
     std::optional<Engine::Core::Context> core = Engine::Core::Context::Create("Engine", 800, 600);
     if (!core)
     {

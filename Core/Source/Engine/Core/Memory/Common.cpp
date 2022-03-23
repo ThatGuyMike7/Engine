@@ -1,6 +1,6 @@
 #include <Engine/Core/Common.hpp>
 
-namespace Engine::Core::Memory
+namespace Engine::Core
 {
     size_t AlignAddress(void *ptr, size_t alignment)
     {

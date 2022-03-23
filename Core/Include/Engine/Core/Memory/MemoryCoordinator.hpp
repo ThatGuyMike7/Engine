@@ -27,6 +27,8 @@ namespace Engine::Core::Memory
 
         void* Allocate(size_t size);
         void* AllocateAligned(size_t size, size_t alignment);
+        void* Reallocate(void *ptr, size_t newSize);
+        void* ReallocateAligned(void *ptr, size_t newSize, size_t alignment);
         void Free(void *ptr);
         void FreeAligned(void *ptr);
 

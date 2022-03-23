@@ -24,6 +24,20 @@ namespace Engine::Core::Memory
         #endif
     }
 
+    void* GeneralPurposeAllocator::Reallocate(void *ptr, size_t newSize)
+    {
+        return std::realloc(ptr, newSize);
+    }
+
+    void* GeneralPurposeAllocator::ReallocateAligned(void *ptr, size_t newSize, size_t alignment)
+    {
+        #if defined(ENGINE_WINDOWS)
+        return _aligned_realloc(ptr, newSize, alignment);
+        #else
+        static_assert(1, "Currently not supported on non-Windows platforms.");
+        #endif
+    }
+
     void GeneralPurposeAllocator::Free(void *ptr)
     {
         std::free(ptr);

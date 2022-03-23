@@ -73,6 +73,29 @@ namespace Engine::Core::Memory
         return ptr;
     }
 
+    void* MemoryCoordinator::Reallocate(void *ptr, size_t newSize)
+    {
+        ENGINE_ASSERT(newSize > 0);
+        ptr = generalPurposeAllocator.Reallocate(ptr, newSize);
+        if (ptr == nullptr)
+        {
+            OutOfMemoryHandler();
+        }
+        return ptr;
+    }
+
+    void* MemoryCoordinator::ReallocateAligned(void *ptr, size_t newSize, size_t alignment)
+    {
+        ENGINE_ASSERT(newSize > 0);
+        ENGINE_ASSERT(IsPowerOfTwo(alignment));
+        ptr = generalPurposeAllocator.ReallocateAligned(ptr, newSize, alignment);
+        if (ptr == nullptr)
+        {
+            OutOfMemoryHandler();
+        }
+        return ptr;
+    }
+
     void MemoryCoordinator::Free(void *ptr)
     {
         generalPurposeAllocator.Free(ptr);

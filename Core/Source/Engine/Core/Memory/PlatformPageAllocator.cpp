@@ -1,4 +1,4 @@
-#ifdef ENGINE_WINDOWS
+#if defined(ENGINE_WINDOWS)
 
 #include <Engine/Core/Memory/PlatformPageAllocator.hpp>
 #include <Windows.h>

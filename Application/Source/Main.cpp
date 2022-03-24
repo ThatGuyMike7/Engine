@@ -5,6 +5,11 @@
 #include <Engine/Core/Collections/List.hpp>
 #include <iostream>
 
+struct alignas(64) Int
+{
+    int value;
+};
+
 int main()
 {
     #if defined(ENGINE_WINDOWS)
@@ -18,25 +23,34 @@ int main()
     std::cout << "Debug" << std::endl;
     #endif
 
-    Engine::Core::Collections::List<int> list;
-    std::cout << "Capacity: " << list.Capacity() << std::endl;
-    int i = 0;
-    int j = 1;
-    int k = 2;
-
-    for (int cnt = 0; cnt < 3; cnt++)
+    ///////
+    Engine::Core::Collections::List<Int> list;
+    for (int i = 0; i < 10; i++)
     {
-        list.Add(i);
-        list.Add(std::move(j));
-        list.Add(k);
+        Int element = { i };
+        list.Add(element);
     }
 
-    for (size_t cnt = 0; cnt < list.Count(); cnt++)
+    for (size_t i = 0; i < list.Count(); i++)
     {
-        std::cout << list[cnt] << " ";
+        std::cout << list[i].value;
     }
     std::cout << std::endl;
-    std::cout << "Capacity: " << list.Capacity() << std::endl;
+
+    list.RemoveAt(3);
+    for (size_t i = 0; i < list.Count(); i++)
+    {
+        std::cout << list[i].value;
+    }
+    std::cout << std::endl;
+
+    list.RemoveAt(list.Count() - 1);
+    for (size_t i = 0; i < list.Count(); i++)
+    {
+        std::cout << list[i].value;
+    }
+    std::cout << std::endl;
+    ///////
 
     std::optional<Engine::Core::Context> core = Engine::Core::Context::Create("Engine", 800, 600);
     if (!core)

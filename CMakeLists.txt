@@ -22,6 +22,7 @@ function(set_common_options TARGET TARGET_OUTPUT_DIR TARGET_OUTPUT_NAME)
             /wd4996             # Suppress warning "'fopen': This function or variable may be unsafe. Consider using fopen_s instead."
             /wd4146             # Suppress warning "unary minus operator applied to unsigned type, result still unsigned".
             /wd4100             # Suppress warning "unreferenced formal parameter".
+            /wd4324             # Suppress warning "structure was padded due to alignment specifier".
             #/fsanitize=address
         )
     else ()

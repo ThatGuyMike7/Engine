@@ -40,24 +40,24 @@ namespace Engine::Core::Collections
         List(List &&other);
         List& operator=(List &&other);
 
-        T const& operator[](size_t index) const
+        [[nodiscard]] T const& operator[](size_t index) const
         {
             return At(index);
         }
 
-        T& operator[](size_t index)
+        [[nodiscard]] T& operator[](size_t index)
         {
             return At(index);
         }
 
         // \returns Number of elements currently contained in the list.
-        size_t Count() const
+        [[nodiscard]] size_t Count() const
         {
             return count;
         }
 
         // \returns How many elements can fit into the current internal buffer.
-        size_t Capacity() const
+        [[nodiscard]] size_t Capacity() const
         {
             return bufferSize / Spacing;
         }
@@ -65,7 +65,7 @@ namespace Engine::Core::Collections
         T& Add(T const &value)
         {
             size_t pos = count * Spacing;
-            if (pos + sizeof(T) > bufferSize)
+            if (pos + Spacing > bufferSize)
             {
                 GrowBuffer();
             }
@@ -78,7 +78,7 @@ namespace Engine::Core::Collections
         T& Add(T &&value)
         {
             size_t pos = count * Spacing;
-            if (pos + sizeof(T) > bufferSize)
+            if (pos + Spacing > bufferSize)
             {
                 GrowBuffer();
             }
@@ -108,18 +108,56 @@ namespace Engine::Core::Collections
             }
         }
 
-    private:
-        static constexpr size_t Alignment = alignof(T);
-        static constexpr size_t Spacing = sizeof(T);
+        // Insert `value` before `index`.
+        // \returns The inserted element.
+        T& Insert(size_t index, T const &value)
+        {
+            #if defined(ENGINE_DEBUG)
+            ENGINE_ASSERT(index <= count);
+            #endif
+
+            if ((count + 1) * Spacing > bufferSize)
+            {
+                GrowBuffer();
+            }
+            T *insertDest = &At(index);
+            std::move_backward(insertDest, End(), End() + 1);
+            T *element = new(insertDest) T(value); // Copy-construct.
+            count++;
+            return *element;
+        }
+
+        // Insert `value` before `index`.
+        // \returns The inserted element.
+        T& Insert(size_t index, T &&value)
+        {
+            #if defined(ENGINE_DEBUG)
+            ENGINE_ASSERT(index <= count);
+            #endif
+
+            if ((count + 1) * Spacing > bufferSize)
+            {
+                GrowBuffer();
+            }
+            T *insertDest = &At(index);
+            std::move_backward(insertDest, End(), End() + 1);
+            T *element = new(insertDest) T(std::move(value)); // Move-construct.
+            count++;
+            return *element;
+        }
 
         // \returns One past the end.
-        T* End()
+        [[nodiscard]] T* End() const
         {
             char *ptr = buffer + count * Spacing;
             return reinterpret_cast<T*>(ptr);
         }
 
-        T& At(size_t index)
+    private:
+        static constexpr size_t Alignment = alignof(T);
+        static constexpr size_t Spacing = sizeof(T);
+
+        [[nodiscard]] T& At(size_t index) const
         {
             char *ptr = buffer + index * Spacing;
             return *reinterpret_cast<T*>(ptr);

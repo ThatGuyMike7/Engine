@@ -37,14 +37,15 @@ int main()
     }
     std::cout << std::endl;
 
-    list.RemoveAt(3);
+    Int foo = { 0 };
+    list.Insert(list.Count(), foo);
     for (size_t i = 0; i < list.Count(); i++)
     {
         std::cout << list[i].value;
     }
     std::cout << std::endl;
 
-    list.RemoveAt(list.Count() - 1);
+    list.Insert(3, std::move(foo));
     for (size_t i = 0; i < list.Count(); i++)
     {
         std::cout << list[i].value;

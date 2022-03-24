@@ -88,16 +88,27 @@ namespace Engine::Core::Collections
             return *element;
         }
 
+        // Remove the last element.
+        // Calling this function when `count` is 0 causes undefined behaviour.
+        void PopBack()
+        {
+            #if defined(ENGINE_DEBUG)
+            ENGINE_ASSERT(count > 0);
+            #endif
+
+            At(count - 1).~T();
+            count--;
+        }
+
         void RemoveAt(size_t index)
         {
             #if defined(ENGINE_DEBUG)
             ENGINE_ASSERT(index < count);
             #endif
 
-            if (index == count - 1) // Last element
+            if (index == count - 1) // Last element.
             {
-                At(index).~T();
-                count--;
+                PopBack();
             }
             else
             {
@@ -106,6 +117,28 @@ namespace Engine::Core::Collections
                 std::move(dest + 1, End(), dest);
                 count--;
             }
+        }
+
+        // Remove all elements.
+        // The capacity remains unchanged, you may want to call `ShrinkToFit`.
+        void Clear()
+        {
+            T *end = End();
+            T *ptr = Front();
+            while (ptr != end)
+            {
+                ptr->~T();
+                ptr++;
+            }
+            count = 0;
+        }
+
+        // Potentially reduce memory usage by shrinking capacity to element count.
+        // Note that the next time an element is added, memory will need to be allocated.
+        void ShrinkToFit()
+        {
+            bufferSize = count * Spacing;
+            buffer = static_cast<char*>(Memory::MC.ReallocateAligned(buffer, bufferSize, Alignment));
         }
 
         // Insert `value` before `index`.
@@ -144,6 +177,12 @@ namespace Engine::Core::Collections
             T *element = new(insertDest) T(std::move(value)); // Move-construct.
             count++;
             return *element;
+        }
+
+        // \returns Buffer pointer as `T*`.
+        [[nodiscard]] T* Front() const
+        {
+            return reinterpret_cast<T*>(buffer);
         }
 
         // \returns One past the end.

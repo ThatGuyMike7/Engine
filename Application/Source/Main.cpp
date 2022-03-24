@@ -51,6 +51,26 @@ int main()
         std::cout << list[i].value;
     }
     std::cout << std::endl;
+
+    list.PopBack();
+    list.PopBack();
+    for (size_t i = 0; i < list.Count(); i++)
+    {
+        std::cout << list[i].value;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Capacity before shrink to fit: " << list.Capacity() << std::endl;
+    list.ShrinkToFit();
+    std::cout << "Capacity after shrink to fit: " << list.Capacity() << std::endl;
+    std::cout << "Clearing list..." << std::endl;
+    std::cout << "Elements: ";
+    list.Clear();
+    for (size_t i = 0; i < list.Count(); i++)
+    {
+        std::cout << list[i].value;
+    }
+    std::cout << std::endl;
     ///////
 
     std::optional<Engine::Core::Context> core = Engine::Core::Context::Create("Engine", 800, 600);

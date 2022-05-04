@@ -1,5 +1,5 @@
 #ifndef ENGINE_GRAPHICS_CONTEXT_INCLUDED
-#define ENGINE_GRAPHICS_GRAPHICS_INCLUDED
+#define ENGINE_GRAPHICS_CONTEXT_INCLUDED
 
 #include <Engine/Core/Context.hpp>
 #include <optional>

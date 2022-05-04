@@ -14,7 +14,7 @@ namespace Engine::Core::Collections
     {
     public:
         // \param capacity Initial size of the internal buffer expressed in elements. Must not be 0.
-        List(size_t capacity = 8)
+        List(size_t capacity = 16)
             : count(0)
         {
             ENGINE_ASSERT(capacity != 0);
@@ -35,6 +35,7 @@ namespace Engine::Core::Collections
             Memory::MC.FreeAligned(buffer);
         }
 
+        // TODO: Implement these.
         List(List const &other);
         List& operator=(List const &other);
         List(List &&other);
@@ -60,6 +61,18 @@ namespace Engine::Core::Collections
         [[nodiscard]] size_t Capacity() const
         {
             return bufferSize / Spacing;
+        }
+
+        // Reallocate internal buffer so that it can fit up to `newCapacity` elements.
+        // If `newCapacity` is less or equal than capacity, do nothing.
+        void Reserve(size_t newCapacity)
+        {
+            size_t newBufferSize = newCapacity * Spacing;
+            if (newBufferSize > bufferSize)
+            {
+                bufferSize = newBufferSize;
+                buffer = static_cast<char*>(Memory::MC.ReallocateAligned(buffer, newBufferSize, Alignment));
+            }
         }
 
         T& Add(T const &value)
@@ -89,7 +102,7 @@ namespace Engine::Core::Collections
         }
 
         // Remove the last element.
-        // Calling this function when `count` is 0 causes undefined behaviour.
+        // Calling this function when count is 0 causes undefined behaviour.
         void PopBack()
         {
             #if defined(ENGINE_DEBUG)
@@ -113,8 +126,7 @@ namespace Engine::Core::Collections
             else
             {
                 T *dest = &At(index);
-                //dest->~T();
-                std::move(dest + 1, End(), dest);
+                std::move(dest + 1, End(), dest); // Move-assign.
                 count--;
             }
         }

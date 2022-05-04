@@ -5,9 +5,16 @@ namespace Engine::Core::Memory
 {
     class IAllocator
     {
-        friend class MemoryCoordinator;
+        friend class Engine::Core::Memory::MemoryCoordinator;
 
     protected:
+        IAllocator() = default;
+        ~IAllocator() = default;
+        IAllocator(IAllocator const&) = default;
+        IAllocator& operator=(IAllocator const&) = default;
+        IAllocator(IAllocator&&) = default;
+        IAllocator& operator=(IAllocator&&) = default;
+
         // Must be matched with a call to `Free`.
         virtual void* Allocate(size_t size) = 0;
         // Must be matched with a call to `FreeAligned`.

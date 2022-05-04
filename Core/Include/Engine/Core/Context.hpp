@@ -1,5 +1,5 @@
-#ifndef ENGINE_CORE_CONTEXT_INCLUDED
-#define ENGINE_CORE_CONTEXT_INCLUDED
+#ifndef ENGINE_CORE_WINDOW_INCLUDED
+#define ENGINE_CORE_WINDOW_INCLUDED
 
 #include <optional>
 
@@ -16,17 +16,18 @@ namespace Engine::Core
     using WindowHandle = void*;
 
     // Non-constructible, non-copyable.
-    class Context
+    // Represents window and associated GL context.
+    class Window
     {
     public:
-        ~Context();
-        Context(Context const&) = delete;
-        Context& operator=(Context const&) = delete;
-        Context(Context &&other);
-        Context& operator=(Context &&other);
+        ~Window();
+        Window(Window const&) = delete;
+        Window& operator=(Window const&) = delete;
+        Window(Window &&other);
+        Window& operator=(Window &&other) = delete;
 
         // Open a window and create a GL context.
-        [[nodiscard]] static std::optional<Context> Create(char const *windowTitle, int windowWidth, int windowHeight);
+        [[nodiscard]] static std::optional<Window> Create(char const *title, int width, int height);
 
         GLProcAddress_t* GetGLProcAddress() const;
 
@@ -46,7 +47,7 @@ namespace Engine::Core
 
     private:
         inline static bool created = false;
-        Context();
+        Window();
 
         // Call before creating window.
         bool SetGLAttributes() const;
@@ -55,7 +56,7 @@ namespace Engine::Core
         void CloseWindow();
 
         GLContext GLContext;
-        WindowHandle window;
+        WindowHandle handle;
         bool initialized;
         bool desiresQuit;
     };

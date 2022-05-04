@@ -11,7 +11,7 @@ namespace Engine::Graphics
     [[nodiscard]] int GLMajorVersion();
     [[nodiscard]] int GLMinorVersion();
 
-    // Non-constructable, non-copyable, non-moveable.
+    // Non-copyable, non-moveable.
     // Encapsulates a window, GL context, and GL function pointers.
     // Only one instance of this class may exist.
     // Must be used on the thread it was created on.

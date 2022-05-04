@@ -5,7 +5,7 @@ namespace Engine::Core::Memory
 {
     class IAllocator
     {
-        friend class Engine::Core::Memory::MemoryCoordinator;
+        friend class MemoryCoordinator;
 
     protected:
         IAllocator() = default;
@@ -17,11 +17,14 @@ namespace Engine::Core::Memory
 
         // Must be matched with a call to `Free`.
         virtual void* Allocate(size_t size) = 0;
+
         // Must be matched with a call to `FreeAligned`.
         virtual void* AllocateAligned(size_t size, size_t alignment) = 0;
+
         // Must be matched with a call to `Free`.
         // \param ptr Must have been previously allocated with `Allocate`.
         virtual void* Reallocate(void *ptr, size_t newSize) = 0;
+
         // Must be matched with a call to `FreeAligned`.
         // \param ptr Must have been previously allocated with `AllocateAligned`.
         // \param alignment Must be the same value as passed to `AllocateAligned`.

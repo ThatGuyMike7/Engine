@@ -14,7 +14,7 @@ namespace Engine::Core::Collections
     {
     public:
         // \param capacity Initial size of the internal buffer expressed in elements. Must not be 0.
-        List(size_t capacity = 16)
+        explicit List(size_t capacity = 16)
             : count(0)
         {
             ENGINE_ASSERT(capacity != 0);

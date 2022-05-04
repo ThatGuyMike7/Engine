@@ -12,8 +12,7 @@ namespace Engine::Core
         SYSTEM_INFO info;
         GetSystemInfo(&info);
 
-        SystemInfo _info;
-        _info.pageSize = info.dwPageSize;
+        SystemInfo _info = { info.dwPageSize };
         return _info;
     }
     #endif

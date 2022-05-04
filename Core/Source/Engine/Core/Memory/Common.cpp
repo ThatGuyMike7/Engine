@@ -4,7 +4,7 @@ namespace Engine::Core
 {
     size_t AlignAddress(void *ptr, size_t alignment)
     {
-        std::uintptr_t intPtr = reinterpret_cast<std::uintptr_t>(ptr);
+        auto intPtr = reinterpret_cast<std::uintptr_t>(ptr);
         return alignment - (intPtr % alignment);
     }
 }

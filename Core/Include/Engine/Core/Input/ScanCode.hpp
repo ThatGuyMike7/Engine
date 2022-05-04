@@ -135,8 +135,8 @@ namespace Engine::Core::Input
         PrintScreen = 70,
         ScrollLock = 71,
         Pause = 72,
-        Insert = 73, /**< insert on Pc, help on some Mac keyboards (but
-                                    does send code 73, not 117) */
+        Insert = 73, /**< Insert on PC, Help on some Mac keyboards
+                          (but does send code 73, not 117) */
         Home = 74,
         PageUp = 75,
         Delete = 76,
@@ -147,8 +147,7 @@ namespace Engine::Core::Input
         Down = 81,
         Up = 82,
 
-        NumLockClear = 83, /**< num lock on Pc, clear on Mac keyboards
-                                        */
+        NumLockClear = 83, /**< Num Lock on PC, Clear on Mac keyboards */
         KPDivide = 84,
         KPMultiply = 85,
         KPMinus = 86,
@@ -167,19 +166,19 @@ namespace Engine::Core::Input
         KPPeriod = 99,
 
         NonUSBackslash = 100, /**< This is the additional key that ISO
-                                            *   keyboards have over ANSI ones,
-                                            *   located between left shift and Y.
-                                            *   Produces Grave Accent and Tilde in a
-                                            *   Us or Uk Mac layout, Reverse Solidus
-                                            *   (backslash) and Vertical Line in a
-                                            *   Us or Uk Windows layout, and
-                                            *   Less-Than Sign and Greater-Than Sign
-                                            *   in a Swiss German, German, or French
-                                            *   layout. */
-        Application = 101, /**< windows contextual menu, compose */
+                               *   keyboards have over ANSI ones,
+                               *   located between left shift and Y.
+                               *   Produces Grave Accent and Tilde in a
+                               *   US or UK Mac layout, Reverse Solidus
+                               *   (backslash) and Vertical Line in a
+                               *   US or UK Windows layout, and
+                               *   Less-Than Sign and Greater-Than Sign
+                               *   in a Swiss German, German, or French
+                               *   layout. */
+        Application = 101, /**< Windows Contextual Menu, compose */
         Power = 102, /**< The USB document says this is a status flag,
-                                *   not a physical key - but some Mac keyboards
-                                *   do have a power key. */
+                      *   not a physical key - but some Mac keyboards
+                      *   do have a power key. */
         Kp_Equals = 103,
         F13 = 104,
         F14 = 105,
@@ -198,7 +197,7 @@ namespace Engine::Core::Input
         Menu = 118,
         Select = 119,
         Stop = 120,
-        Again = 121,   /**< redo */
+        Again = 121, /**< Redo */
         Undo = 122,
         Cut = 123,
         Copy = 124,
@@ -214,8 +213,7 @@ namespace Engine::Core::Input
         KPComma = 133,
         KPEqualsAS400 = 134,
 
-        International1 = 135, /**< used on Asian keyboards, see
-                                                footnotes in USB doc */
+        International1 = 135, /**< Used on Asian keyboards, see footnotes in USB doc */
         International2 = 136,
         International3 = 137, /**< Yen */
         International4 = 138,
@@ -296,17 +294,17 @@ namespace Engine::Core::Input
 
         LCTRL = 224,
         LSHIFT = 225,
-        LALT = 226, /**< alt, option */
-        LGUI = 227, /**< windows, command (apple), meta */
+        LALT = 226, /**< Alt, Option */
+        LGUI = 227, /**< Windows, Command (Apple), Meta */
         RCTRL = 228,
         RSHIFT = 229,
-        RALT = 230, /**< alt gr, option */
-        RGUI = 231, /**< windows, command (apple), meta */
+        RALT = 230, /**< Alt Gr, Option */
+        RGUI = 231, /**< Windows, Command (Apple), Meta */
 
         Mode = 257,    /**< I'm not sure if this is really not covered
-                                    *   by any of the above, but since there's a
-                                    *   special Kmod_Mode for it I'm adding it here
-                                    */
+                        *   by any of the above, but since there's a
+                        *   special KMod_Mode for it I'm adding it here
+                        */
 
         /* @} *//* Usage page 0x07 */
 
@@ -340,14 +338,14 @@ namespace Engine::Core::Input
         /**
          *  \name Walther keys
          *
-         *  These are values that Christian Walther added (for mac keyboard?).
+         *  These are values that Christian Walther added (for Mac keyboard?).
          */
         /* @{ */
 
         BrightnessDown = 275,
         BrightnessUp = 276,
-        DisplaySwitch = 277, /**< display mirroring/dual display
-                                            switch, video mode switch */
+        DisplaySwitch = 277, /**< Display mirroring/dual display switch,
+                              *   video mode switch */
         KBDIllumToggle = 278,
         KBDIllumDown = 279,
         KBDIllumUp = 280,
@@ -373,8 +371,8 @@ namespace Engine::Core::Input
 
         /* Add any other keys here. */
 
-        NumScanCodes = 512 /**< not a key, just marks the number of scancodes
-                                    for array bounds */
+        NumScanCodes = 512 /**< Not a key, just marks the number of scancodes
+                            *   for array bounds */
     };
 
     // \returns Pointer to the name of the scancode.

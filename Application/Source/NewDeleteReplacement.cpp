@@ -4,7 +4,7 @@
 // The versions taking `std::align_val_t` are called if alignment requirement of the type
 // exceeds `__STDCPP_DEFAULT_NEW_ALIGNMENT__`.
 
-// The following 4 replacement functions are sufficient to handle all allocations,
+// The following 4 replacement functions are sufficient to windowHandle all allocations,
 // as the standard library non-throwing and array versions call these.
 void* operator new(size_t size)
 {

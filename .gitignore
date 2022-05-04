@@ -1,9 +1,10 @@
 # Editor files
-/.vscode/
+#/.vscode/
 /*.sublime-project
 /*.sublime-workspace
 /*.clang_complete
 /*.vim
+#/.idea/
 
 # Visual Studio files
 /.vs/

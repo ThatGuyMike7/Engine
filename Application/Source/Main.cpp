@@ -1,5 +1,5 @@
-#include <Engine/Core/Context.hpp>
-#include <Engine/Graphics/Context.hpp>
+#include <Engine/Core/Window.hpp>
+#include <Engine/Graphics/GraphicsContext.hpp>
 #include <Engine/Core/Memory/MemoryCoordinator.hpp>
 #include <Engine/Core/System.hpp>
 #include <Engine/Core/Collections/List.hpp>
@@ -73,26 +73,15 @@ int main()
     std::cout << std::endl;
     ///////
 
-    std::optional<Engine::Core::Context> core = Engine::Core::Context::Create("Engine", 800, 600);
-    if (!core)
-    {
-        return 1;
-    }
-
-    std::optional<Engine::Graphics::Context> graphics = Engine::Graphics::Context::Create(core.value());
-    if (!graphics)
-    {
-        return 1;
-    }
-
+    Engine::Graphics::GraphicsContext context;
     std::cout << "OpenGL " << Engine::Graphics::GLMajorVersion() << "." << Engine::Graphics::GLMinorVersion() << std::endl;
 
-    while (!core->DesiresQuit())
+    while (!context.Window().ShouldQuit())
     {
-        core->PollEvents();
+        context.Window().PollEvents();
 
         Engine::Graphics::Clear(0.2f, 0.4f, 0.7f);
-        core->Swap();
+        context.Window().Swap();
     }
 
     std::cout << "Done." << std::endl;

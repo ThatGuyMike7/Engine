@@ -12,6 +12,7 @@ struct alignas(64) Int
 
 int main()
 {
+
     #if defined(ENGINE_WINDOWS)
     std::cout << "Windows" << std::endl;
 
@@ -22,6 +23,8 @@ int main()
     #if defined(ENGINE_DEBUG)
     std::cout << "Debug" << std::endl;
     #endif
+
+    Engine::Core::ShowErrorMessageBox("This is only a test.");
 
     ///////
     Engine::Core::Collections::List<Int> list;
@@ -73,7 +76,14 @@ int main()
     std::cout << std::endl;
     ///////
 
-    Engine::Graphics::GraphicsContext context;
+    auto maybeContext = Engine::Graphics::GraphicsContext::Create();
+    if (!maybeContext)
+    {
+        return 0;
+    }
+
+    auto context = std::move(*maybeContext);
+
     std::cout << "OpenGL " << Engine::Graphics::GLMajorVersion() << "." << Engine::Graphics::GLMinorVersion() << std::endl;
 
     while (!context.Window().ShouldQuit())

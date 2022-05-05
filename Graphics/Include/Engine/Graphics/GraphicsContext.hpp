@@ -11,10 +11,10 @@ namespace Engine::Graphics
     [[nodiscard]] int GLMajorVersion();
     [[nodiscard]] int GLMinorVersion();
 
-    // Non-copyable, non-moveable.
+    // Non-copyable, non-move-assignable.
     // Encapsulates a window, GL context, and GL function pointers.
     // Only one instance of this class may exist.
-    // Must be used on the thread it was created on.
+    // Must only be used on the main thread.
     class GraphicsContext
     {
     public:
@@ -24,8 +24,14 @@ namespace Engine::Graphics
         ~GraphicsContext();
         GraphicsContext(GraphicsContext const&) = delete;
         GraphicsContext& operator=(GraphicsContext const&) = delete;
-        GraphicsContext(GraphicsContext &&other) = delete;
+        GraphicsContext(GraphicsContext &&other);
         GraphicsContext& operator=(GraphicsContext &&other) = delete;
+
+        // Open a window, create GL context and make it current, and load GL function pointers.
+        // An error message box is shown if something went wrong.
+        // \returns GraphicsContext on success. An empty value if something went wrong.
+        static std::optional<GraphicsContext> Create(char const *title = "Game",
+                                                     int width = 800, int height = 600) noexcept;
 
         Engine::Core::Window& Window();
 

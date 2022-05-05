@@ -1,6 +1,6 @@
 #include <Engine/Graphics/GraphicsContext.hpp>
+#include <Engine/Core/System.hpp>
 #include <glad/glad.h>
-#include <iostream>
 #include <stdexcept>
 
 namespace Engine::Graphics
@@ -41,6 +41,24 @@ namespace Engine::Graphics
     GraphicsContext::~GraphicsContext()
     {
         isCreated = false;
+    }
+
+    GraphicsContext::GraphicsContext(GraphicsContext &&other)
+        : window(std::move(other.window))
+    { }
+
+    std::optional<GraphicsContext> GraphicsContext::Create(char const *title,
+                                                           int width, int height) noexcept
+    {
+        try
+        {
+            return GraphicsContext(title, width, height);
+        }
+        catch (std::exception const& e)
+        {
+            Engine::Core::ShowErrorMessageBox(e.what());
+            return std::nullopt;
+        }
     }
 
     Engine::Core::Window& GraphicsContext::Window()

@@ -1,19 +1,39 @@
 #include <Engine/Core/System.hpp>
+#include <SDL2/SDL.h>
 
 #if defined(ENGINE_WINDOWS)
 #include <Windows.h>
 #endif
 
+#include <iostream>
+
 namespace Engine::Core
 {
-    #if defined(ENGINE_WINDOWS)
     SystemInfo GetSystemInfo()
     {
+        #if defined(ENGINE_WINDOWS)
         SYSTEM_INFO info;
         GetSystemInfo(&info);
 
         SystemInfo _info = { info.dwPageSize };
         return _info;
+        #endif
     }
-    #endif
+
+    void ShowErrorMessageBox(char const *message, std::optional<Window> parentWindow)
+    {
+        SDL_Window* SDLWindow = nullptr;
+        if (parentWindow)
+        {
+            SDLWindow = static_cast<SDL_Window*>(parentWindow->Handle());
+        }
+
+        int status = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", message, SDLWindow);
+        if (status != 0)
+        {
+            std::cerr << "Something went wrong showing message box: " << SDL_GetError()
+                      << std::endl;
+            std::cerr << message << std::endl;
+        }
+    }
 }

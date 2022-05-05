@@ -37,9 +37,17 @@ namespace Engine::Core
         if (isSDLInitialized)
         {
             SDL_Quit();
+            isCreated = false;
         }
+    }
 
-        isCreated = false;
+    Window::Window(Window &&other)
+        : GLContext(other.GLContext), windowHandle(other.windowHandle),
+        isSDLInitialized(other.isSDLInitialized), shouldQuit(other.shouldQuit)
+    {
+        other.GLContext = nullptr;
+        other.windowHandle = nullptr;
+        other.isSDLInitialized = false;
     }
 
     GLProcAddress_t* Window::GetGLProcAddress() const
@@ -93,6 +101,14 @@ namespace Engine::Core
         return shouldQuit;
     }
 
+    WindowSize Window::Size() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        WindowSize size;
+        SDL_GL_GetDrawableSize(SDLWindow, &size.width, &size.height);
+        return size;
+    }
+
     int Window::Width() const
     {
         auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
@@ -107,6 +123,11 @@ namespace Engine::Core
         int height;
         SDL_GL_GetDrawableSize(SDLWindow, nullptr, &height);
         return height;
+    }
+
+    [[nodiscard]] WindowHandle Window::Handle()
+    {
+        return windowHandle;
     }
 
     void Window::InitSDL()

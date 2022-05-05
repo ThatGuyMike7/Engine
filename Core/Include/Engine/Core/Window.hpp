@@ -15,10 +15,16 @@ namespace Engine::Core
     // Could be for example `HWND` when writing a WinAPI window abstraction.
     using WindowHandle = void*;
 
-    // Non-copyable, non-moveable.
+    struct WindowSize
+    {
+        int width;
+        int height;
+    };
+
+    // Non-copyable, non-move-assignable.
     // Encapsulates a window and GL context.
     // Only one instance of this class may exist.
-    // Must be used on the thread it was created on.
+    // Must only be used on the main thread.
     class Window
     {
     public:
@@ -28,7 +34,7 @@ namespace Engine::Core
         ~Window();
         Window(Window const&) = delete;
         Window& operator=(Window const&) = delete;
-        Window(Window &&other) = delete;
+        Window(Window &&other);
         Window& operator=(Window &&other) = delete;
 
         [[nodiscard]] GLProcAddress_t* GetGLProcAddress() const;
@@ -39,6 +45,11 @@ namespace Engine::Core
 
         [[nodiscard]] bool ShouldQuit() const;
 
+        // Info useful for calling 'glViewport'.
+        // More efficient than calling `Width()` and `Height()` individually.
+        // \returns Client area width.
+        [[nodiscard]] WindowSize Size() const;
+
         // Info useful for calling `glViewport`.
         // \returns Client area width.
         [[nodiscard]] int Width() const;
@@ -46,6 +57,8 @@ namespace Engine::Core
         // Info useful for calling `glViewport`.
         // \returns Client area height.
         [[nodiscard]] int Height() const;
+
+        [[nodiscard]] WindowHandle Handle();
 
     private:
         inline static bool isCreated = false;

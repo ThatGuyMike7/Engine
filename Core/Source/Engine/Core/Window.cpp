@@ -96,6 +96,18 @@ namespace Engine::Core
         SDL_GL_SwapWindow(SDLWindow);
     }
 
+    void Window::Show() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_ShowWindow(SDLWindow);
+    }
+
+    void Window::Hide() const
+    {
+        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_HideWindow(SDLWindow);
+    }
+
     bool Window::ShouldQuit() const
     {
         return shouldQuit;
@@ -224,7 +236,7 @@ namespace Engine::Core
 
     void Window::CreateWindow(char const *title, int width, int height)
     {
-        Uint32 flags = SDL_WINDOW_OPENGL;
+        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
         SDL_Window *SDLWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
         if (SDLWindow == nullptr)
         {

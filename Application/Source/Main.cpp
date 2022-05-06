@@ -24,8 +24,6 @@ int main()
     std::cout << "Debug" << std::endl;
     #endif
 
-    Engine::Core::ShowErrorMessageBox("This is only a test.");
-
     ///////
     Engine::Core::Collections::List<Int> list;
     for (int i = 0; i < 10; i++)
@@ -83,6 +81,9 @@ int main()
     }
 
     auto context = std::move(*maybeContext);
+
+    Engine::Graphics::Clear(0.2f, 0.4f, 0.7f);
+    context.Window().Show();
 
     std::cout << "OpenGL " << Engine::Graphics::GLMajorVersion() << "." << Engine::Graphics::GLMinorVersion() << std::endl;
 

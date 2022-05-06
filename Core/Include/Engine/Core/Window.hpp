@@ -54,6 +54,9 @@ namespace Engine::Core
 
         void Swap() const;
 
+        void Show() const;
+        void Hide() const;
+
         [[nodiscard]] bool ShouldQuit() const;
 
         /**

@@ -11,7 +11,9 @@
 
 namespace Engine::Core
 {
-    // \returns Offset from `ptr` where `alignment` is satisfied.
+    /**
+     * \returns Offset from `ptr` where `alignment` is satisfied.
+     */
     size_t AlignAddress(void *ptr, size_t alignment);
 
     constexpr bool IsPowerOfTwo(size_t n)
@@ -25,8 +27,10 @@ namespace Engine::Core
         return ((n + multiple - 1) / multiple) * multiple;
     }
 
-    // Faster than `RoundUpToNext`.
-    // \param multiple Must be a power of 2.
+    /**
+     * Faster than `RoundUpToNext`.
+     * \param multiple Must be a power of 2.
+     */
     constexpr size_t RoundUpToNextPowerOfTwo(size_t n, size_t multiple)
     {
         ENGINE_ASSERT(IsPowerOfTwo(multiple));

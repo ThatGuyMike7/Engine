@@ -14,7 +14,9 @@ namespace Engine::Core::Memory
     void DeleteHandler(void *ptr);
     void DeleteAlignedHandler(void *ptr);
 
-    // Non-copyable, non-moveable.
+    /**
+     * Non-copyable, non-moveable.
+     */
     class MemoryCoordinator
     {
     public:
@@ -38,8 +40,10 @@ namespace Engine::Core::Memory
         GeneralPurposeAllocator generalPurposeAllocator;
     };
 
-    // Global memory coordinator.
-    // All allocations shall go through this object.
+    /**
+     * Global memory coordinator.
+     * All allocations shall go through this object.
+     */
     inline MemoryCoordinator MC;
 }
 

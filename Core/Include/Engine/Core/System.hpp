@@ -16,10 +16,11 @@ namespace Engine::Core
     };
     SystemInfo GetSystemInfo();
 
-    /** Show an error message box,
-      * or print the message to `stderr` if no message box could be shown.
-      * Must only be called on the main thread.
-      */
+    /**
+     * Show an error message box,
+     * or print the message to `stderr` if no message box could be shown.
+     * Must only be called on the main thread.
+     */
     void ShowErrorMessageBox(char const *message,
                              std::optional<Window> parentWindow = std::nullopt);
 }

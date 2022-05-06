@@ -7,13 +7,17 @@
 
 namespace Engine::Core::Collections
 {
-    // Contiguous sequence container type.
-    // `std::vector` replacement.
+    /**
+     * Contiguous sequence container type.
+     * `std::vector` replacement.
+     */
     template <typename T>
     class List
     {
     public:
-        // \param capacity Initial size of the internal buffer expressed in elements. Must not be 0.
+        /**
+         * \param capacity Initial size of the internal buffer expressed in elements. Must not be 0.
+         */
         explicit List(size_t capacity = 16)
             : count(0)
         {
@@ -51,20 +55,26 @@ namespace Engine::Core::Collections
             return At(index);
         }
 
-        // \returns Number of elements currently contained in the list.
+        /**
+         * \returns Number of elements currently contained in the list.
+         */
         [[nodiscard]] size_t Count() const
         {
             return count;
         }
 
-        // \returns How many elements can fit into the current internal buffer.
+        /**
+         * \returns How many elements can fit into the current internal buffer.
+         */
         [[nodiscard]] size_t Capacity() const
         {
             return bufferSize / Spacing;
         }
 
-        // Reallocate internal buffer so that it can fit up to `newCapacity` elements.
-        // If `newCapacity` is less or equal than capacity, do nothing.
+        /**
+         * Reallocate internal buffer so that it can fit up to `newCapacity` elements.
+         * If `newCapacity` is less or equal than capacity, do nothing.
+         */
         void Reserve(size_t newCapacity)
         {
             size_t newBufferSize = newCapacity * Spacing;
@@ -101,8 +111,10 @@ namespace Engine::Core::Collections
             return *element;
         }
 
-        // Remove the last element.
-        // Calling this function when count is 0 causes undefined behaviour.
+        /**
+         * Remove the last element.
+         * Calling this function when count is 0 causes undefined behaviour.
+         */
         void PopBack()
         {
             #if defined(ENGINE_DEBUG)
@@ -131,8 +143,10 @@ namespace Engine::Core::Collections
             }
         }
 
-        // Remove all elements.
-        // The capacity remains unchanged, you may want to call `ShrinkToFit`.
+        /**
+         * Remove all elements.
+         * The capacity remains unchanged, you may want to call `ShrinkToFit`.
+         */
         void Clear()
         {
             T *end = End();
@@ -145,16 +159,20 @@ namespace Engine::Core::Collections
             count = 0;
         }
 
-        // Potentially reduce memory usage by shrinking capacity to element count.
-        // Note that the next time an element is added, memory will need to be allocated.
+        /**
+         * Potentially reduce memory usage by shrinking capacity to element count.
+         * Note that the next time an element is added, memory will need to be allocated.
+         */
         void ShrinkToFit()
         {
             bufferSize = count * Spacing;
             buffer = static_cast<char*>(Memory::MC.ReallocateAligned(buffer, bufferSize, Alignment));
         }
 
-        // Insert `value` before `index`.
-        // \returns The inserted element.
+        /**
+         * Insert `value` before `index`.
+         * \returns The inserted element.
+         */
         T& Insert(size_t index, T const &value)
         {
             #if defined(ENGINE_DEBUG)
@@ -172,8 +190,10 @@ namespace Engine::Core::Collections
             return *element;
         }
 
-        // Insert `value` before `index`.
-        // \returns The inserted element.
+        /**
+         * Insert `value` before `index`.
+         * \returns The inserted element.
+         */
         T& Insert(size_t index, T &&value)
         {
             #if defined(ENGINE_DEBUG)
@@ -191,13 +211,17 @@ namespace Engine::Core::Collections
             return *element;
         }
 
-        // \returns Buffer pointer as `T*`.
+        /**
+         * \returns Buffer pointer as `T*`.
+         */
         [[nodiscard]] T* Front() const
         {
             return reinterpret_cast<T*>(buffer);
         }
 
-        // \returns One past the end.
+        /**
+         * \returns One past the end.
+         */
         [[nodiscard]] T* End() const
         {
             char *ptr = buffer + count * Spacing;

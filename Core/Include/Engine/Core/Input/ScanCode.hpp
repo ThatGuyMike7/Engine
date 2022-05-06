@@ -3,12 +3,14 @@
 
 namespace Engine::Core::Input
 {
-    // The following enum is pretty much copied from SDL2 and matches the type `SDL_Scancode`.
-    // Its values are based on the USB usage page standard:
-    // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
-    //
-    // In case another input implementation must be supported (glfw, WinAPI ...),
-    // a constexpr mapping function could be written to map values from this enum to another.
+    /**
+     * The following enum is pretty much copied from SDL2 and matches the type `SDL_Scancode`.
+     * Its values are based on the USB usage page standard:
+     * https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
+     *
+     * In case another input implementation must be supported (glfw, WinAPI ...),
+     * a constexpr mapping function could be written to map values from this enum to another.
+     */
     enum class ScanCode : int
     {
         Unknown = 0,

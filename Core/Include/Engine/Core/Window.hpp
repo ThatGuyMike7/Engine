@@ -1,7 +1,11 @@
 #ifndef ENGINE_CORE_WINDOW_INCLUDED
 #define ENGINE_CORE_WINDOW_INCLUDED
 
+#include <Engine/Core/Event.hpp>
 #include <optional>
+#include <functional>
+#include <vector>
+#include <cstdint>
 
 namespace Engine::Core
 {
@@ -21,6 +25,9 @@ namespace Engine::Core
      */
     using WindowHandle = void*;
 
+    /**
+     * Client area size.
+     */
     struct WindowSize
     {
         int width;
@@ -36,6 +43,21 @@ namespace Engine::Core
      */
     class Window
     {
+    public:
+        /**
+         * Client area size.
+         */
+        struct SizeChangedEventData
+        {
+            int32_t width;
+            int32_t height;
+        };
+
+        Event<SizeChangedEventData>& OnSizeChanged();
+
+    private:
+        EventOwner<SizeChangedEventData> onSizeChangedOwner;
+
     public:
         /**
          * Open a window and create a GL context.

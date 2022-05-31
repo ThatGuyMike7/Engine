@@ -1,11 +1,37 @@
 #include <Engine/Core/Window.hpp>
 #include <Engine/Core/String.hpp>
+#include <Engine/Core/Common.hpp>
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 namespace Engine::Core
 {
+    /*
+    void Window::AddSizeChangedEventHandler(SizeChangedEventHandler eventHandler)
+    {
+        sizeChangedEventHandlers.push_back(eventHandler);
+    }
+
+    bool Window::RemoveSizeChangedEventHandler(SizeChangedEventHandler eventHandler)
+    {
+        // TODO: Write a templated event system instead of doing all this stuff in this class.
+        //       We need to store IDs for these `std::function` because they have no
+        //       comparison operator defined.
+        std::find(sizeChangedEventHandlers.begin(), sizeChangedEventHandlers.end(), eventHandler);
+    }
+
+    void Window::OnSizeChanged(SizeChangedEventData eventData) const
+    {
+        for (auto const& eventHandler : sizeChangedEventHandlers)
+        {
+            ENGINE_ASSERT(eventHandler);
+            eventHandler(eventData);
+        }
+    }
+    */
+
     Window::Window(char const *title, int width, int height)
         : GLContext(nullptr), windowHandle(nullptr), isSDLInitialized(false), shouldQuit(false)
     {
@@ -50,6 +76,11 @@ namespace Engine::Core
         other.isSDLInitialized = false;
     }
 
+    Event<Window::SizeChangedEventData>& Window::OnSizeChanged()
+    {
+        return onSizeChangedOwner.GetEvent();
+    }
+
     GLProcAddress_t* Window::GetGLProcAddress() const
     {
         return SDL_GL_GetProcAddress;
@@ -71,6 +102,12 @@ namespace Engine::Core
                     break;
                 case SDL_WINDOWEVENT_CLOSE:
                     shouldQuit = true;
+                    break;
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                    onSizeChangedOwner.Fire(
+                            SizeChangedEventData{ event.window.data1, event.window.data2 }
+                    );
+                    //OnSizeChanged(SizeChangedEventData{ event.window.data1, event.window.data2 });
                     break;
                 }
                 break;

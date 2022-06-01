@@ -3,6 +3,14 @@
 #include <glad/glad.h>
 #include <stdexcept>
 
+namespace
+{
+    void OnWindowSizeChanged(Engine::Core::Window::SizeChangedEventData const &data)
+    {
+        glViewport(0, 0, data.width, data.height);
+    }
+}
+
 namespace Engine::Graphics
 {
     void Clear(float r, float g, float b)
@@ -21,6 +29,11 @@ namespace Engine::Graphics
         return GLVersion.minor;
     }
 
+    void SetViewport(int width, int height)
+    {
+        glViewport(0, 0, width, height);
+    }
+
     GraphicsContext::GraphicsContext(char const *title, int width, int height)
         : window(title, width, height)
     {
@@ -33,7 +46,9 @@ namespace Engine::Graphics
         }
 
         LoadGLFunctions();
-        Resize();
+
+        SetViewport(width, height);
+        window.OnSizeChangedEvent().Subscribe(OnWindowSizeChanged);
 
         isCreated = true;
     }
@@ -64,11 +79,6 @@ namespace Engine::Graphics
     Engine::Core::Window& GraphicsContext::Window()
     {
         return window;
-    }
-
-    void GraphicsContext::Resize() const
-    {
-        glViewport(0, 0, window.Width(), window.Height());
     }
 
     void GraphicsContext::LoadGLFunctions() const

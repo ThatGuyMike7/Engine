@@ -11,6 +11,8 @@ namespace Engine::Graphics
     [[nodiscard]] int GLMajorVersion();
     [[nodiscard]] int GLMinorVersion();
 
+    void SetViewport(int width, int height);
+
     /**
      * Non-copyable, non-move-assignable.
      * Encapsulates a window, GL context, and GL function pointers.
@@ -40,9 +42,6 @@ namespace Engine::Graphics
                                                      int width = 800, int height = 600) noexcept;
 
         Engine::Core::Window& Window();
-
-        // TODO: Call when window client area resizes.
-        void Resize() const;
 
     private:
         inline static bool isCreated = false;

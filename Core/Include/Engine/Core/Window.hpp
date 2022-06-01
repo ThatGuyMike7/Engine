@@ -53,7 +53,7 @@ namespace Engine::Core
             int32_t height;
         };
 
-        Event<SizeChangedEventData>& OnSizeChanged();
+        Event<SizeChangedEventData>& OnSizeChangedEvent();
 
     private:
         EventOwner<SizeChangedEventData> onSizeChangedOwner;

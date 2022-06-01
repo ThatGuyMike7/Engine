@@ -22,10 +22,16 @@ namespace Engine::Core
          */
         using EventFunctionT = void (*)(EventDataT const&);
 
-        explicit EventHandler(EventFunctionT eventFunction)
+        EventHandler(EventFunctionT eventFunction)
                 : eventFunction(eventFunction)
         {
             ENGINE_ASSERT(eventFunction != nullptr);
+        }
+
+        // `friend` makes this a non-member function with access to private fields.
+        friend bool operator==(EventHandler const &lhs, EventHandler const &rhs)
+        {
+            return lhs.eventFunction == rhs.eventFunction;
         }
 
     private:

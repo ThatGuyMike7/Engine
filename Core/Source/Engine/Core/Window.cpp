@@ -4,34 +4,9 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <stdexcept>
-#include <algorithm>
 
 namespace Engine::Core
 {
-    /*
-    void Window::AddSizeChangedEventHandler(SizeChangedEventHandler eventHandler)
-    {
-        sizeChangedEventHandlers.push_back(eventHandler);
-    }
-
-    bool Window::RemoveSizeChangedEventHandler(SizeChangedEventHandler eventHandler)
-    {
-        // TODO: Write a templated event system instead of doing all this stuff in this class.
-        //       We need to store IDs for these `std::function` because they have no
-        //       comparison operator defined.
-        std::find(sizeChangedEventHandlers.begin(), sizeChangedEventHandlers.end(), eventHandler);
-    }
-
-    void Window::OnSizeChanged(SizeChangedEventData eventData) const
-    {
-        for (auto const& eventHandler : sizeChangedEventHandlers)
-        {
-            ENGINE_ASSERT(eventHandler);
-            eventHandler(eventData);
-        }
-    }
-    */
-
     Window::Window(char const *title, int width, int height)
         : GLContext(nullptr), windowHandle(nullptr), isSDLInitialized(false), shouldQuit(false)
     {
@@ -76,7 +51,7 @@ namespace Engine::Core
         other.isSDLInitialized = false;
     }
 
-    Event<Window::SizeChangedEventData>& Window::OnSizeChanged()
+    Event<Window::SizeChangedEventData>& Window::OnSizeChangedEvent()
     {
         return onSizeChangedOwner.GetEvent();
     }
@@ -107,7 +82,6 @@ namespace Engine::Core
                     onSizeChangedOwner.Fire(
                             SizeChangedEventData{ event.window.data1, event.window.data2 }
                     );
-                    //OnSizeChanged(SizeChangedEventData{ event.window.data1, event.window.data2 });
                     break;
                 }
                 break;
@@ -273,7 +247,7 @@ namespace Engine::Core
 
     void Window::CreateWindow(char const *title, int width, int height)
     {
-        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE;
         SDL_Window *SDLWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
         if (SDLWindow == nullptr)
         {

@@ -249,6 +249,12 @@ namespace Engine::Core::Collections
         // Element count.
         size_t count;
     };
+
+    /**
+     * Test `List` a bit with console output.
+     * FIXME: Write proper tests and benchmarks.
+     */
+    void TestList();
 }
 
 #endif

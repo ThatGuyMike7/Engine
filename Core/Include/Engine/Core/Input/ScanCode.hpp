@@ -377,11 +377,17 @@ namespace Engine::Core::Input
                             *   for array bounds */
     };
 
-    // \returns Pointer to the name of the scancode.
-    // If the scancode doesn't have a name, this function returns an empty string.
-    const char* GetScanCodeName(ScanCode scanCode);
-
+    /**
+     * `ScanCode::NumScanCodes` as `size_t`, for example to be used in
+     * template parameter lists of container types so you don't have to static_cast there.
+     */
     constexpr size_t NumScanCodes = static_cast<size_t>(ScanCode::NumScanCodes);
+
+    /**
+     * \returns Pointer to the name of the scancode.
+     * If the scancode doesn't have a name, this function returns an empty string.
+     */
+    const char* GetScanCodeName(ScanCode scanCode);
 }
 
 #endif

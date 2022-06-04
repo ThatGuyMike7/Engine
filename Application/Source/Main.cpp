@@ -41,6 +41,15 @@ int main()
     {
         context.Window().PollEvents();
 
+        if (context.Window().keyboard.IsKeyDown(Engine::Core::Input::ScanCode::W))
+        {
+            std::cout << "W down" << std::endl;
+        }
+        else
+        {
+            std::cout << "W up" << std::endl;
+        }
+
         Engine::Graphics::Clear(0.2f, 0.4f, 0.7f);
         context.Window().Swap();
     }

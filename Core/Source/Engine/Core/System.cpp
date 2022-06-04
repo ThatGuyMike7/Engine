@@ -22,13 +22,13 @@ namespace Engine::Core
 
     void ShowErrorMessageBox(char const *message, std::optional<Window> parentWindow)
     {
-        SDL_Window* SDLWindow = nullptr;
+        SDL_Window* sdlWindow = nullptr;
         if (parentWindow)
         {
-            SDLWindow = static_cast<SDL_Window*>(parentWindow->Handle());
+            sdlWindow = static_cast<SDL_Window*>(parentWindow->Handle());
         }
 
-        int status = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", message, SDLWindow);
+        int status = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", message, sdlWindow);
         if (status != 0)
         {
             std::cerr << "Something went wrong showing message box: " << SDL_GetError()

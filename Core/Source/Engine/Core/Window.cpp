@@ -69,8 +69,11 @@ namespace Engine::Core
             switch (event.type)
             {
             default:
+            {
                 break;
+            }
             case SDL_WINDOWEVENT:
+            {
                 switch (event.window.event)
                 {
                 default:
@@ -79,22 +82,22 @@ namespace Engine::Core
                     shouldQuit = true;
                     break;
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    onSizeChangedOwner.Fire(
-                            SizeChangedEventData{ event.window.data1, event.window.data2 }
-                    );
+                    auto data = SizeChangedEventData{ event.window.data1, event.window.data2 };
+                    onSizeChangedOwner.Fire(data);
                     break;
                 }
-                break;
-            case SDL_KEYUP:
-            {
-                const char *name = SDL_GetScancodeName(event.key.keysym.scancode);
-                std::cout << "Key Up: \"" << name << "\"" << std::endl;
                 break;
             }
             case SDL_KEYDOWN:
             {
-                const char *name = SDL_GetScancodeName(event.key.keysym.scancode);
-                std::cout << "Key Down: \"" << name << "\"" << std::endl;
+                Input::ScanCode key = static_cast<Input::ScanCode>(event.key.keysym.scancode);
+                keyboard.PressKey(key);
+                break;
+            }
+            case SDL_KEYUP:
+            {
+                Input::ScanCode key = static_cast<Input::ScanCode>(event.key.keysym.scancode);
+                keyboard.ReleaseKey(key);
                 break;
             }
             }
@@ -103,20 +106,20 @@ namespace Engine::Core
 
     void Window::Swap() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
-        SDL_GL_SwapWindow(SDLWindow);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_GL_SwapWindow(sdlWindow);
     }
 
     void Window::Show() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
-        SDL_ShowWindow(SDLWindow);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_ShowWindow(sdlWindow);
     }
 
     void Window::Hide() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
-        SDL_HideWindow(SDLWindow);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_HideWindow(sdlWindow);
     }
 
     bool Window::ShouldQuit() const
@@ -126,25 +129,25 @@ namespace Engine::Core
 
     WindowSize Window::Size() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
         WindowSize size;
-        SDL_GL_GetDrawableSize(SDLWindow, &size.width, &size.height);
+        SDL_GL_GetDrawableSize(sdlWindow, &size.width, &size.height);
         return size;
     }
 
     int Window::Width() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
         int width;
-        SDL_GL_GetDrawableSize(SDLWindow, &width, nullptr);
+        SDL_GL_GetDrawableSize(sdlWindow, &width, nullptr);
         return width;
     }
 
     int Window::Height() const
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
         int height;
-        SDL_GL_GetDrawableSize(SDLWindow, nullptr, &height);
+        SDL_GL_GetDrawableSize(sdlWindow, nullptr, &height);
         return height;
     }
 
@@ -235,8 +238,8 @@ namespace Engine::Core
 
     void Window::CreateGLContext()
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
-        GLContext = SDL_GL_CreateContext(SDLWindow);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
+        GLContext = SDL_GL_CreateContext(sdlWindow);
         if (GLContext == nullptr)
         {
             throw std::runtime_error(
@@ -248,20 +251,20 @@ namespace Engine::Core
     void Window::CreateWindow(char const *title, int width, int height)
     {
         Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE;
-        SDL_Window *SDLWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
-        if (SDLWindow == nullptr)
+        SDL_Window *sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+        if (sdlWindow == nullptr)
         {
             auto message =
                     BuildString("Something went wrong creating window: ", SDL_GetError());
             throw std::runtime_error(message);
         }
-        windowHandle = SDLWindow;
+        windowHandle = sdlWindow;
     }
 
     void Window::CloseWindow()
     {
-        auto SDLWindow = static_cast<SDL_Window*>(windowHandle);
-        SDL_DestroyWindow(SDLWindow);
+        auto sdlWindow = static_cast<SDL_Window*>(windowHandle);
+        SDL_DestroyWindow(sdlWindow);
         windowHandle = nullptr;
     }
 }

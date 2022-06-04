@@ -2,6 +2,7 @@
 #define ENGINE_CORE_WINDOW_INCLUDED
 
 #include <Engine/Core/Event.hpp>
+#include <Engine/Core/Input/Keyboard.hpp>
 #include <optional>
 #include <functional>
 #include <vector>
@@ -69,6 +70,8 @@ namespace Engine::Core
         Window& operator=(Window const&) = delete;
         Window(Window &&other);
         Window& operator=(Window &&other) = delete;
+
+        Input::Keyboard keyboard;
 
         [[nodiscard]] GLProcAddress_t* GetGLProcAddress() const;
 

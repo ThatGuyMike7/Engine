@@ -41,7 +41,7 @@ int main()
     {
         context.Window().PollEvents();
 
-        if (context.Window().keyboard.IsKeyDown(Engine::Core::Input::ScanCode::W))
+        if (context.Window().Keyboard().IsKeyDown(Engine::Core::Input::ScanCode::W))
         {
             std::cout << "W down" << std::endl;
         }

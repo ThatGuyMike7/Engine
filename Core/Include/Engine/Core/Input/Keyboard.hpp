@@ -5,25 +5,18 @@
 #include <cstdint>
 #include <bitset>
 
-namespace Engine::Core
-{
-    class Window;
-}
-
 namespace Engine::Core::Input
 {
     class Keyboard
     {
-        friend class Engine::Core::Window;
-
     public:
-        bool IsKeyDown(ScanCode key) const;
-
-    private:
-        std::bitset<NumScanCodes> keyboardState;
+        [[nodiscard]] bool IsKeyDown(ScanCode key) const;
 
         void PressKey(ScanCode key);
         void ReleaseKey(ScanCode key);
+
+    private:
+        std::bitset<NumScanCodes> keyboardState;
     };
 }
 

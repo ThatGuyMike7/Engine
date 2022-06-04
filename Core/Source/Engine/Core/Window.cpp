@@ -31,10 +31,12 @@ namespace Engine::Core
         {
             SDL_GL_DeleteContext(GLContext);
         }
+
         if (windowHandle != nullptr)
         {
             CloseWindow();
         }
+
         if (isSDLInitialized)
         {
             SDL_Quit();
@@ -44,7 +46,8 @@ namespace Engine::Core
 
     Window::Window(Window &&other)
         : GLContext(other.GLContext), windowHandle(other.windowHandle),
-        isSDLInitialized(other.isSDLInitialized), shouldQuit(other.shouldQuit)
+          isSDLInitialized(other.isSDLInitialized), shouldQuit(other.shouldQuit),
+          keyboard(std::move(other.keyboard))
     {
         other.GLContext = nullptr;
         other.windowHandle = nullptr;
@@ -59,6 +62,11 @@ namespace Engine::Core
     GLProcAddress_t* Window::GetGLProcAddress() const
     {
         return SDL_GL_GetProcAddress;
+    }
+
+    Input::Keyboard const& Window::Keyboard() const
+    {
+        return keyboard;
     }
 
     void Window::PollEvents()

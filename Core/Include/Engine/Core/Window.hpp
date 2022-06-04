@@ -71,9 +71,9 @@ namespace Engine::Core
         Window(Window &&other);
         Window& operator=(Window &&other) = delete;
 
-        Input::Keyboard keyboard;
-
         [[nodiscard]] GLProcAddress_t* GetGLProcAddress() const;
+
+        Input::Keyboard const& Keyboard() const;
 
         void PollEvents();
 
@@ -139,6 +139,7 @@ namespace Engine::Core
         WindowHandle windowHandle;
         bool isSDLInitialized;
         bool shouldQuit;
+        Input::Keyboard keyboard;
     };
 }
 

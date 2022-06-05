@@ -69,7 +69,7 @@ namespace Engine::Graphics
         {
             return GraphicsContext(title, width, height);
         }
-        catch (std::exception const& e)
+        catch (std::exception const &e)
         {
             Engine::Core::ShowErrorMessageBox(e.what());
             return std::nullopt;

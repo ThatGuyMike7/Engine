@@ -73,7 +73,7 @@ namespace Engine::Core
 
         [[nodiscard]] GLProcAddress_t* GetGLProcAddress() const;
 
-        Input::Keyboard const& Keyboard() const;
+        [[nodiscard]] Input::Keyboard const& Keyboard() const;
 
         void PollEvents();
 
@@ -122,7 +122,7 @@ namespace Engine::Core
         void ConfigureGLProfile() const;
 
         /**
-         * Create a new GL context for the window and make it current.
+         * Link a new GL context for the window and make it current.
          * Must be called after the SDL window has been created.
          * May throw if something went wrong.
          */

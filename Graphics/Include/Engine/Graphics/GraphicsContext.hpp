@@ -38,8 +38,9 @@ namespace Engine::Graphics
          * An error message box is shown if something went wrong.
          * \returns GraphicsContext on success. An empty value if something went wrong.
          */
-        static std::optional<GraphicsContext> Create(char const *title = "Game",
-                                                     int width = 800, int height = 600) noexcept;
+        [[nodiscard]] static std::optional<GraphicsContext> Create(char const *title = "Game",
+                                                                   int width = 800,
+                                                                   int height = 600) noexcept;
 
         Engine::Core::Window& Window();
 

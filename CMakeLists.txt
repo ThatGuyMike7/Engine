@@ -46,7 +46,7 @@ function(set_common_options TARGET TARGET_OUTPUT_DIR TARGET_OUTPUT_NAME)
         RUNTIME_OUTPUT_DIRECTORY "${TARGET_OUTPUT_DIR}/$<0:>" # For executable targets.
         ARCHIVE_OUTPUT_DIRECTORY "${TARGET_OUTPUT_DIR}/$<0:>" # For static library targets.
         OUTPUT_NAME "${TARGET_OUTPUT_NAME}"
-        CXX_STANDARD 17
+        CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
     )

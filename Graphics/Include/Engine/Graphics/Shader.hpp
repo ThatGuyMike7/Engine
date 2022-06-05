@@ -56,13 +56,6 @@ namespace Engine::Graphics
         bool isHandleValid;
     };
 
-    struct ShaderCompileResult
-    {
-        std::optional<Shader> shader;
-        std::string infoLog;
-        bool success;
-    };
-
     /**
      * Non-copyable.
      * Encapsulates a linked OpenGL shader program.

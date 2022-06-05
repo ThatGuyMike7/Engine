@@ -122,7 +122,7 @@ namespace Engine::Core
         void ConfigureGLProfile() const;
 
         /**
-         * Link a new GL context for the window and make it current.
+         * Create a new GL context for the window and make it current.
          * Must be called after the SDL window has been created.
          * May throw if something went wrong.
          */
